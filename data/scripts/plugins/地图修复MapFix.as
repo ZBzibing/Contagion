@@ -1,6 +1,6 @@
 void OnPluginInit()
 {
-    PluginData::SetVersion( "1.3" );
+    PluginData::SetVersion( "1.4" );
 	PluginData::SetAuthor( "紫冰ZB" );
 	PluginData::SetName( "地图修复 MapFix" );
 	IsMapFix();
@@ -14,6 +14,7 @@ void ThePresident_OnMapStart()
 	Engine.PrecacheFile( model, "models/props_downtown/building_props/subway_wallad06.mdl" );
 	Engine.PrecacheFile( model, "models/props_suburbs/fence_modular_short01.mdl" );	//木栅栏
 	Engine.PrecacheFile( model, "models/props_downtown/downtown_fence01a.mdl" );	//铁丝网
+	Engine.PrecacheFile( model, "models/props_trap/fence01.mdl" );	//铁丝网
 }
 
 void ThePresident_OnRoundStart()
@@ -24,6 +25,17 @@ void ThePresident_OnRoundStart()
 // ----------地图BUG修复
 void IsMapFix()
 {
+//巴洛克广场
+	if ( Globals.IsCurrentMap( "ce_barlowesquare" ) )
+	{
+		CEntityData@ roof_fence1 = EntityCreator::EntityData();
+		roof_fence1.Add( "model", "models/props_trap/fence01.mdl" );
+		roof_fence1.Add( "solid", "6" );
+		EntityCreator::Create( "prop_dynamic", Vector( 6450, 4155, -2054 ), QAngle( 0, 0, 0 ), roof_fence1 );
+
+		Chat.PrintToChat(all,"{purple}[紫冰] {white}当前地图:"+Globals.GetCurrentMapName()+"部分BUG已修复!");
+		return;
+	}
 //警察局
     if ( Globals.IsCurrentMap( "ce_roanokepd_halloween" ) || Globals.IsCurrentMap( "ce_roanokepd" ))
 	{
@@ -53,14 +65,14 @@ void IsMapFix()
 			@ce_bio_pEnt = FindEntityByName( ce_bio_pEnt, ce_bio );
 		}
 
-		Chat.PrintToChat(all,"当前地图:"+Globals.GetCurrentMapName()+"部分BUG已修复!");
+		Chat.PrintToChat(all,"{purple}[紫冰] {white}当前地图:"+Globals.GetCurrentMapName()+"部分BUG已修复!");
 		return;
 	}
 //终点站
 	if ( Globals.IsCurrentMap( "ce_laststop_03" ))
 	{
 		CreatePhysProps();
-		Chat.PrintToChat(all,"当前地图:"+Globals.GetCurrentMapName()+"部分BUG已经修复!");
+		Chat.PrintToChat(all,"{purple}[紫冰] {white}当前地图:"+Globals.GetCurrentMapName()+"部分BUG已修复!");
 		return;
 	}
 
